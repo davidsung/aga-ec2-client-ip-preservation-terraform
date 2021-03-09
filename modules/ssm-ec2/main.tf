@@ -43,15 +43,8 @@ resource "aws_network_interface" "this" {
   )
 }
 
-//data "aws_network_interfaces" "eni" {
-//  filter {
-//    name = "attachment.instance-id"
-//    values = [aws_instance.this.id]
-//  }
-//}
-//
-//resource "aws_eip" "this" {
-//  count = var.eni_count - 1
-//  vpc = true
-//  network_interface = aws_network_interface.this[count.index].id
-//}
+resource "aws_eip" "this" {
+  count = var.eni_count - 1
+  vpc = true
+  network_interface = aws_network_interface.this[count.index].id
+}
