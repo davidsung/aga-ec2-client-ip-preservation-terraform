@@ -70,14 +70,22 @@ output "venus_windows_network" {
   value = module.venus.windows_network
 }
 
-output "earth_aga_id" {
-  value = module.earth_aga.global_accelerator_id
-}
-
-output "earth_aga_dns_name" {
-  value = module.earth_aga.global_accelerator_dns_name
-}
-
-output "earth_aga_ip_sets" {
-  value = module.earth_aga.global_accelerator_ip_sets
+output "aga" {
+  value = {
+    "earth" = {
+      id = module.earth_aga.global_accelerator_id
+      dns_name = module.earth_aga.global_accelerator_dns_name
+      ip_sets = module.earth_aga.global_accelerator_ip_sets
+    }
+    "mars" = {
+      id = module.mars_aga.global_accelerator_id
+      dns_name = module.mars_aga.global_accelerator_dns_name
+      ip_sets = module.mars_aga.global_accelerator_ip_sets
+    }
+    "venus" = {
+      id = module.venus_aga.global_accelerator_id
+      dns_name = module.venus_aga.global_accelerator_dns_name
+      ip_sets = module.venus_aga.global_accelerator_ip_sets
+    }
+  }
 }

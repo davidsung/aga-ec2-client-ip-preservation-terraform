@@ -65,13 +65,13 @@ variable "app_port" {
 }
 
 variable "app_protocol" {
-  type = string
-  default = "TCP"
+  type        = string
+  default     = "TCP"
   description = "Application protocol, TCP or UDP"
 }
 
 variable "client_ip_preservation_enabled" {
-  type = bool
+  type    = bool
   default = true
 }
 

@@ -10,7 +10,6 @@ resource "aws_globalaccelerator_listener" "listener" {
     from_port = var.app_port
     to_port = var.app_port
   }
-//  tags = var.tags
 }
 
 resource "aws_globalaccelerator_endpoint_group" "endpoint_group" {
@@ -19,5 +18,8 @@ resource "aws_globalaccelerator_endpoint_group" "endpoint_group" {
     client_ip_preservation_enabled = var.client_ip_preservation_enabled
     endpoint_id = var.endpoint_id
   }
-//  tags = var.tags
+}
+
+data "aws_ip_ranges" "route53_healthcheck" {
+  services = ["route53_healthchecks"]
 }
