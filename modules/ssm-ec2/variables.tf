@@ -57,6 +57,12 @@ variable "user_data" {
   default = null
 }
 
+variable "eip_enabled" {
+  type = bool
+  default = false
+  description = "Enable Elastic IP"
+}
+
 variable "tags" {
   type = map(string)
   default = {}

@@ -106,6 +106,7 @@ module "compute_linux" {
   iam_instance_profile   = module.ssm_instance_profile.instance_profile_name
   user_data              = file("${path.module}/templates/init.sh")
   eni_count              = var.network_interface_count
+  eip_enabled            = var.eip_enabled
 
   tags = merge(
     var.tags,
@@ -124,6 +125,7 @@ module "compute_windows_server" {
   eni_count              = var.network_interface_count
   iam_instance_profile   = module.ssm_instance_profile.instance_profile_name
   key_name               = var.key_name
+  eip_enabled            = var.eip_enabled
 
   tags = merge(
     var.tags,

@@ -22,6 +22,18 @@ output "public_ip" {
   value = aws_instance.this.public_ip
 }
 
-//output "enis" {
-//  value = data.aws_network_interfaces.eni.*
-//}
+output "eips" {
+  value = flatten([aws_eip.primary_eip.*.public_ip, aws_eip.additional_eips.*.public_ip])
+}
+
+output "public_ips_cidr" {
+  value = var.eip_enabled ? flatten([
+    [
+      for ip in aws_eip.primary_eip.*.public_ip : "${ip}/32"
+    ],
+    [
+      for ip in aws_eip.additional_eips.*.public_ip : "${ip}/32"
+    ]
+  ]) : [ "${aws_instance.this.public_ip}/32" ]
+}
+

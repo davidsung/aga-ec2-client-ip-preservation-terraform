@@ -98,3 +98,9 @@ variable "rdp_whitelist_cidr" {
   default     = null
   description = "Public IP address with CIDR allowed to remote access Windows instances"
 }
+
+variable "eip_enabled" {
+  type = bool
+  default = false
+  description = "Enable Elastic IP"
+}

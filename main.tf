@@ -9,15 +9,16 @@ module "earth" {
   vpc_cidr                = var.earth_vpc_cidr
   instance_type           = var.instance_type
   network_interface_count = var.network_interface_count
+  eip_enabled             = var.eip_enabled
   key_name                = var.key_name
   icmp_whitelist_cidrs    = [var.mars_vpc_cidr, var.venus_vpc_cidr]
   rdp_whitelist_cidrs     = var.rdp_whitelist_cidr == null ? null : [var.rdp_whitelist_cidr]
   nginx_whitelist_cidrs   = concat([
       var.mars_vpc_cidr,
       var.venus_vpc_cidr,
-      format("%s/32", module.mars.linux_network["public_ip"]),
-      format("%s/32", module.venus.linux_network["public_ip"])
     ],
+    module.mars.linux_network["public_ips_cidr"],
+    module.venus.linux_network["public_ips_cidr"],
     module.earth_aga.route53_healthcheck_cidr_blocks
   )
 
@@ -37,15 +38,16 @@ module "mars" {
   vpc_cidr                = var.mars_vpc_cidr
   instance_type           = var.instance_type
   network_interface_count = var.network_interface_count
+  eip_enabled             = var.eip_enabled
   key_name                = var.key_name
   icmp_whitelist_cidrs    = [var.earth_vpc_cidr, var.venus_vpc_cidr]
   rdp_whitelist_cidrs     = var.rdp_whitelist_cidr == null ? null : [var.rdp_whitelist_cidr]
   nginx_whitelist_cidrs   = concat([
       var.earth_vpc_cidr,
       var.venus_vpc_cidr,
-      format("%s/32", module.earth.linux_network["public_ip"]),
-      format("%s/32", module.venus.linux_network["public_ip"])
     ],
+    module.earth.linux_network["public_ips_cidr"],
+    module.venus.linux_network["public_ips_cidr"],
     module.mars_aga.route53_healthcheck_cidr_blocks
   )
 
@@ -65,15 +67,16 @@ module "venus" {
   vpc_cidr                = var.venus_vpc_cidr
   instance_type           = var.instance_type
   network_interface_count = var.network_interface_count
+  eip_enabled             = var.eip_enabled
   key_name                = var.key_name
   icmp_whitelist_cidrs    = [var.earth_vpc_cidr, var.mars_vpc_cidr]
   rdp_whitelist_cidrs     = var.rdp_whitelist_cidr == null ? null : [var.rdp_whitelist_cidr]
   nginx_whitelist_cidrs   = concat([
       var.earth_vpc_cidr,
       var.mars_vpc_cidr,
-      format("%s/32", module.earth.linux_network["public_ip"]),
-      format("%s/32", module.mars.linux_network["public_ip"])
     ],
+    module.earth.linux_network["public_ips_cidr"],
+    module.mars.linux_network["public_ips_cidr"],
     module.venus_aga.route53_healthcheck_cidr_blocks
   )
 

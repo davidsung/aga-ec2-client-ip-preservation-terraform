@@ -10,7 +10,7 @@ data "aws_ami" "amazon_linux_2" {
 }
 
 resource "aws_instance" "this" {
-  ami                    = var.ami != null ? var.ami : data.aws_ami.amazon_linux_2.id
+  ami                    = coalesce(var.ami, data.aws_ami.amazon_linux_2.id)
   instance_type          = var.instance_type
   subnet_id              = var.subnet_id
   private_ip             = var.private_ip
@@ -43,8 +43,14 @@ resource "aws_network_interface" "this" {
   )
 }
 
-resource "aws_eip" "this" {
-  count = var.eni_count - 1
+resource "aws_eip" "additional_eips" {
+  count = var.eip_enabled ? var.eni_count - 1 : 0
   vpc = true
   network_interface = aws_network_interface.this[count.index].id
+}
+
+resource "aws_eip" "primary_eip" {
+  count = var.eip_enabled ? 1 : 0
+  vpc = true
+  network_interface = aws_instance.this.primary_network_interface_id
 }

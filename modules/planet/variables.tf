@@ -64,3 +64,9 @@ variable "icmp_whitelist_cidrs" {
   type = list(string)
   default = null
 }
+
+variable "eip_enabled" {
+  type = bool
+  default = false
+  description = "Enable Elastic IP"
+}
